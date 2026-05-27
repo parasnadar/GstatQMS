@@ -1,0 +1,29 @@
+<div class="system-overlay" *ngIf="isVisible" (click)="dismiss()">
+  <div
+    class="modern-toast-card"
+    [ngClass]="type"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="card-body">
+      <div class="icon-circle">
+        <i
+          class="mdi"
+          [ngClass]="{
+            'mdi-alert-circle': type === 'api-fail',
+            'mdi-server-off': type === 'server-error',
+            'mdi-database-off': type === 'not-found',
+          }"
+        ></i>
+      </div>
+
+      <div class="text-content">
+        <h5 class="status-title">{{ title }}</h5>
+        <p class="status-message">{{ message }}</p>
+      </div>
+
+      <button class="btn-close-minimal" (click)="dismiss()">
+        <i class="mdi mdi-close"></i>
+      </button>
+    </div>
+  </div>
+</div>

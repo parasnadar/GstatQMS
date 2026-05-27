@@ -1,0 +1,464 @@
+<div class="position-relative glass-header">
+  <div class="container-fluid py-2">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <a class="navbar-brand" href="#"
+          ><img
+            class="logo-header"
+            src="assets/images/logo.png"
+            alt="GST Appellate Tribunal"
+        /></a>
+      </div>
+      <div class="col-md-6 text-end">
+        <div class="right_logo">
+          <img src="assets/images/logo_sb.png" />
+          <img src="assets/images/logo_di.png" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="auth-viewport">
+  <div class="glow-element"></div>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-5 col-md-8">
+        <div class="premium-auth-card">
+          <div class="auth-toggle-group mb-4">
+            <button class="toggle-btn active">
+              <i class="mdi mdi-plus-circle-outline"></i>
+              <span>Reserve Token</span>
+            </button>
+
+            <div class="toggle-wrapper">
+              <button class="toggle-btn" (click)="onCheckTokenStatusBtnClick()">
+                <i class="mdi mdi-map-marker-path"></i>
+                <span>Track Status</span>
+              </button>
+
+              <div class="premium-hint-card right-side">
+                <div class="hint-content">
+                  <div class="hint-badge live-pulse">Live Tracking</div>
+                  <h6>Real-time Updates</h6>
+                  <p>
+                    Monitor your token progress verification status instantly.
+                  </p>
+                </div>
+                <div class="hint-connector-right"></div>
+              </div>
+            </div>
+          </div>
+
+          @if (!showOTPMsg) {
+            <div class="card-head text-center">
+              <h3 class="track-title">Token Reservation</h3>
+              <div class="divider-container">
+                <hr class="accent-line" />
+              </div>
+              <p class="track-subtitle">
+                Verify your GSTIN to generate a secure filing token.
+              </p>
+            </div>
+            <form
+              [formGroup]="loginForm"
+              (ngSubmit)="onLoginSubmit()"
+              class="mt-4"
+            >
+              <div
+                class="floating-field"
+                [class.field-error]="
+                  loginForm.get('gstInNo')?.invalid &&
+                  loginForm.get('gstInNo')?.touched
+                "
+              >
+                <input
+                  type="text"
+                  id="gstInNo"
+                  formControlName="gstInNo"
+                  placeholder=" "
+                  oninput="this.value = this.value.toUpperCase()"
+                  maxlength="15"
+                  required
+                />
+                <label for="gstInNo"
+                  >Enter GSTIN/Temp Number
+                  <span class="required-star">*</span></label
+                >
+                <div class="field-icon"><i class="mdi mdi-identifier"></i></div>
+
+                @if (loginForm.get("gstInNo")?.touched) {
+                  @if (loginForm.get("gstInNo")?.errors?.["required"]) {
+                    <div class="error-feedback">
+                      <i class="mdi mdi-alert-circle"></i> GSTIN/Temp Number is
+                      required to proceed.
+                    </div>
+                  } @else if (loginForm.get("gstInNo")?.errors?.["pattern"]) {
+                    <div class="error-feedback">
+                      <i class="mdi mdi-alert-circle-outline"></i> Invalid
+                      GSTIN/Temp Number format.
+                    </div>
+                  }
+                }
+              </div>
+              <div class="captcha-grid mb-4">
+                <div class="captcha-visual">
+                  <div class="captcha-img-container">
+                    <img [src]="captchaText" alt="Captcha" />
+                  </div>
+
+                  <div class="captcha-actions">
+                    <button
+                      type="button"
+                      class="refresh-btn"
+                      (click)="handleCaptchaRefresh()"
+                      [class.rotating]="isRefreshing"
+                      title="Reload Captcha"
+                    >
+                      <i class="mdi mdi-reload"></i>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="floating-field"
+                  [class.field-error]="
+                    loginForm.get('userCaptcha')?.invalid &&
+                    loginForm.get('userCaptcha')?.touched
+                  "
+                >
+                  <input
+                    type="text"
+                    formControlName="userCaptcha"
+                    maxlength="6"
+                    placeholder=" "
+                    required
+                  />
+                  <label>Captcha <span class="required-star">*</span></label>
+
+                  @if (loginForm.get("userCaptcha")?.touched) {
+                    @if (loginForm.get("userCaptcha")?.errors?.["required"]) {
+                      <div class="error-feedback">
+                        <i class="mdi mdi-alert-circle"></i> Required
+                      </div>
+                    } @else if (loginForm.get("userCaptcha")?.invalid) {
+                      <div class="error-feedback">
+                        <i class="mdi mdi-alert-circle-outline"></i> 6
+                        characters required
+                      </div>
+                    }
+                  }
+                </div>
+              </div>
+              <button
+                class="btn-submit-gradient"
+                type="submit"
+                [disabled]="loginForm.invalid"
+              >
+                <span>Validate & Proceed</span>
+                <i class="mdi mdi-chevron-right"></i>
+              </button>
+            </form>
+            <div class="auth-action-footer">
+              <div class="footer-content">
+                <span>Lost your token?</span>
+                <button
+                  type="button"
+                  class="action-link-btn"
+                  (click)="onCheckTokenStatusBtnClick()"
+                >
+                  Track existing application
+                </button>
+              </div>
+            </div>
+          }
+
+          @if (showOTPMsg) {
+            <div class="card-head text-center mb-4">
+              <h3>Complete Reservation</h3>
+              <p>
+                We've sent an OTP to
+                <span class="text-primary fw-bold">{{
+                  loginresponse.resData?.mobileNum
+                }}</span>
+              </p>
+            </div>
+            <form [formGroup]="slotForm" (ngSubmit)="onSlotSubmit()">
+              <div class="info-card-grid mb-4">
+                <div class="info-item">
+                  <label>Applicant Name</label>
+                  <span>{{ loginresponse.resData?.name }}</span>
+                </div>
+                <div class="info-item">
+                  <label>GSTN / ID</label>
+                  <span>{{ loginresponse.resData?.gstNo }}</span>
+                </div>
+                <div class="info-item">
+                  <label>Registered Email</label>
+                  <span>{{ loginresponse.resData?.emailId }}</span>
+                </div>
+                <div class="info-item">
+                  <label>Phone</label>
+                  <span>{{ loginresponse.resData?.mobileNum }}</span>
+                </div>
+                <div class="info-item">
+                  <label>Address</label>
+                  <span>{{ loginresponse.resData?.address }}</span>
+                </div>
+              </div>
+              <div
+                class="floating-field"
+                [class.field-error]="
+                  slotForm.get('otp')?.invalid && slotForm.get('otp')?.touched
+                "
+              >
+                <input
+                  type="text"
+                  id="otp"
+                  formControlName="otp"
+                  placeholder=" "
+                  maxlength="6"
+                  required
+                />
+                <label for="otp"
+                  >Enter 6-Digit OTP <span class="required-star">*</span></label
+                >
+                <div class="field-icon">
+                  <i class="mdi mdi-shield-lock-outline"></i>
+                </div>
+
+                @if (slotForm.get("otp")?.touched) {
+                  @if (slotForm.get("otp")?.errors?.["required"]) {
+                    <div class="error-feedback">
+                      <i class="mdi mdi-alert-circle"></i> Required
+                    </div>
+                  } @else if (slotForm.get("otp")?.invalid) {
+                    <div class="error-feedback">
+                      <i class="mdi mdi-alert-circle-outline"></i> 6 characters
+                      required
+                    </div>
+                  }
+                }
+              </div>
+              <div
+                class="floating-field"
+                [class.field-error]="
+                  slotForm.get('date')?.invalid && slotForm.get('date')?.touched
+                "
+              >
+                <input
+                  type="date"
+                  id="dateInput"
+                  formControlName="date"
+                  [min]="todayDate"
+                  required
+                />
+                <label for="dateInput"
+                  >Reservation Date <span class="required-star">*</span></label
+                >
+                <div class="field-icon">
+                  <i class="mdi mdi-calendar-month"></i>
+                </div>
+
+                @if (slotForm.get("date")?.touched) {
+                  @if (slotForm.get("date")?.errors?.["required"]) {
+                    <div class="error-feedback">
+                      <i class="mdi mdi-alert-circle"></i> Required
+                    </div>
+                  }
+                }
+              </div>
+
+              @if (slotForm.get("date")?.value) {
+                <div
+                  id="slots"
+                  class="slot-container mt-4"
+                  style="display: block"
+                >
+                  <h6 class="mb-3 text-secondary uppercase-label">
+                    Available Time Slots
+                  </h6>
+                  <div class="row g-2">
+                    @for (slot of availableSlots; track $index) {
+                      <div class="col-6 col-md-4">
+                        <div
+                          class="slot-box"
+                          [ngClass]="getSlotClass(slot.status)"
+                          [class.selected]="
+                            slotForm.get('selectedSlot')?.value ===
+                            slot.startTime + ' - ' + slot.endTime
+                          "
+                          (click)="selectSlotFromApi(slot)"
+                        >
+                          <div class="time-text">
+                            {{ slot.startTime + " - " + slot.endTime }}
+                          </div>
+                          <small class="status-label">
+                            {{
+                              slot.status === "FILLING_FAST"
+                                ? "Filling Fast"
+                                : (slot.status | titlecase)
+                            }}
+                          </small>
+                        </div>
+                      </div>
+                    } @empty {
+                      <div class="col-12 text-center py-4">
+                        <div class="alert alert-light border">
+                          <i
+                            class="mdi mdi-calendar-remove me-2 text-warning"
+                          ></i>
+
+                          No slots available for the selected date.
+                        </div>
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+              <button
+                class="btn-submit-gradient mt-4"
+                type="submit"
+                [disabled]="slotForm.invalid"
+              >
+                <span>Confirm Booking</span>
+                <i class="mdi mdi-check-all"></i>
+              </button>
+            </form>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Confirmation Modal Called-->
+<div class="xp-overlay" id="confirmationModal">
+  <div class="xp-modal">
+    <div class="xp-line"></div>
+    <div class="xp-content">
+      <div class="xp-text-group">
+        <h5 class="xp-title">Confirm Token Reservation</h5>
+
+        <p class="xp-subtitle-main">
+          Filing for GSTIN:
+          <span class="xp-gst-pill">{{ loginForm.value.gstInNo }}</span>
+        </p>
+
+        <div class="xp-info-grid">
+          <div class="xp-info-card">
+            <div class="xp-info-label">
+              <i class="mdi mdi-calendar-month"></i> Selected Date
+            </div>
+            <div class="xp-info-value">
+              {{ slotForm.value?.date | date: "dd MMM, yyyy" }}
+            </div>
+          </div>
+
+          <div class="xp-info-card">
+            <div class="xp-info-label">
+              <i class="mdi mdi-clock-outline"></i> Selected Time
+            </div>
+            <div class="xp-info-value">
+              {{ slotForm.value?.selectedSlot || "Not Selected" }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="xp-actions">
+        <button type="button" class="xp-btn-cancel" (click)="onNoBtnSubmit()">
+          Dismiss
+        </button>
+        <button type="button" class="xp-btn-confirm" (click)="onYesBtnSubmit()">
+          Confirm
+          <i class="mdi mdi-arrow-right ms-1"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Success Modal Called-->
+<div class="xp-overlay" id="successModal">
+  <div class="xp-modal">
+    <div class="xp-line-success"></div>
+    <div class="xp-content">
+      <div class="xp-icon-box-success">
+        <i class="mdi mdi-check-decagram"></i>
+      </div>
+
+      <div class="xp-text-group">
+        <h5 class="xp-title">Token Reserved!</h5>
+        <p class="xp-subtitle">Your filing slot is confirmed.</p>
+
+        <div class="xp-compact-info mb-3">
+          <div class="xp-mini-badge">
+            <div class="xp-mini-text">
+              <label>Date</label>
+              <span>{{ slotForm.value?.date | date: "dd MMM, yyyy" }}</span>
+            </div>
+          </div>
+
+          <div class="xp-mini-divider"></div>
+
+          <div class="xp-mini-badge">
+            <div class="xp-mini-text">
+              <label>Slot</label>
+              <span>{{ slotForm.value?.selectedSlot }}</span>
+            </div>
+          </div>
+        </div>
+        <p class="xp-subtitle">Reference ID / Temporary Number:</p>
+        <div class="xp-id-badge">{{ this.refId }}</div>
+      </div>
+
+      <div class="xp-info-note">
+        <i class="mdi mdi-information-outline me-1"></i>
+        Additionally, kindly complete the Excel e-filing template provided below
+        for your reference. Requesting you to be prepared with the filled
+        details during the reserved slot, along with the necessary
+        documentation.
+      </div>
+
+      <div class="xp-actions-stack">
+        <button type="button" class="xp-btn-download">
+          <i class="mdi mdi-file-excel me-2"></i> Download Template
+        </button>
+        <button
+          type="button"
+          class="xp-btn-confirm-success"
+          (click)="onOKBtnSubmit()"
+        >
+          Finish
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@if (spinerLoader) {
+  <div class="system-quantum-overlay">
+    <div class="quantum-container">
+      <div class="quantum-emitter">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+      </div>
+
+      <div class="quantum-text-zone">
+        <h4 class="quantum-heading">{{ loaderHeading }}</h4>
+        <div class="status-pill">
+          <span class="live-dot"></span>
+          <p class="quantum-sub">{{ loaderSubtitle }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+<app-status-modal
+  [isVisible]="isStatusModalVisible"
+  [type]="statusConfig.type"
+  [title]="statusConfig.title"
+  [message]="statusConfig.message"
+  (onClose)="isStatusModalVisible = false"
+>
+</app-status-modal>

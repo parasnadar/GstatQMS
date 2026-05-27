@@ -1,0 +1,53 @@
+<router-outlet />
+
+<div class="toast-viewport">
+  @if (toast$ | async; as toast) {
+    <div
+      class="acrylic-toast"
+      [className]="
+        'acrylic-toast ' + toast.type + (isClosing ? ' closing' : '')
+      "
+      role="alert"
+    >
+      <div class="acrylic-inner">
+        <div class="icon-ring-container">
+          <svg class="timer-svg" viewBox="0 0 36 36">
+            <path
+              class="timer-path"
+              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+          </svg>
+          <i
+            class="mdi"
+            [ngClass]="{
+              'mdi-check-bold': toast.type === 'success',
+              'mdi-alert-variant': toast.type === 'warning',
+              'mdi-close-thick': toast.type === 'error',
+            }"
+          ></i>
+        </div>
+
+        <div class="toast-content">
+          <span class="toast-msg">{{ toast.message }}</span>
+        </div>
+
+        <button class="toast-dismiss" (click)="closeToast()">
+          <i class="mdi mdi-close"></i>
+        </button>
+      </div>
+    </div>
+  }
+</div>
+
+<footer class="glass-footer-premium">
+  <div class="footer-glass-content">
+    Designed & Developed by
+    <span class="nic-brand">National Informatics Centre (NIC)</span>
+  </div>
+</footer>
+
+<div id="page-transition-overlay">
+  <div class="transition-loader">
+    <i class="mdi mdi-loading mdi-spin" style="font-size: 3rem"></i>
+  </div>
+</div>

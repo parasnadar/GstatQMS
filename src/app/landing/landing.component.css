@@ -1,0 +1,687 @@
+.slot-container {
+  display: none;
+}
+
+.slot-box {
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.slot-box.available {
+  border-color: green;
+  color: green;
+}
+
+.slot-box.unavailable {
+  border: 1px solid rgb(214, 0, 0);
+  border-color: rgb(214, 0, 0);
+  color: rgb(214, 0, 0);
+  cursor: not-allowed;
+  opacity: 0.6;
+  font-weight: 100;
+}
+
+.slot-box.filling_fast.selected {
+  background-color: rgb(255, 145, 0) !important;
+  border-color: rgb(255, 145, 0) !important;
+  color: white !important;
+}
+
+.filling_fast {
+  border-color: rgb(255, 145, 0);
+  color: rgb(255, 145, 0);
+}
+
+.slot-box.selected {
+  background-color: green !important;
+  border-color: green !important;
+  color: white !important;
+}
+
+.logo {
+  height: 80px;
+}
+
+.navbar-dark .navbar-brand h1 {
+  color: #ffffff;
+}
+
+.logo img {
+  width: 280px !important;
+}
+
+.navbar-brand.logo img {
+  max-width: 280px;
+  width: 100% !important;
+}
+
+.logo-header {
+  height: 75px;
+}
+
+header .right_logo img {
+  padding: 0 18px;
+  height: 50px;
+}
+
+.navbar-brand {
+  height: 76px;
+  width: 360px;
+  display: grid;
+}
+
+.modal-dialog {
+  width: 500px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) !important;
+}
+
+.auth-viewport {
+  min-height: calc(100vh - 120px);
+  padding: 40px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.glow-element {
+  position: absolute;
+  top: -10%;
+  right: -5%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(
+    circle,
+    rgba(37, 99, 235, 0.08) 0%,
+    transparent 70%
+  );
+  z-index: 0;
+}
+
+.premium-auth-card {
+  background: #ffffff;
+  padding: 30px 40px 40px 40px;
+  border-radius: 28px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f1f5f9;
+  position: relative;
+  z-index: 1;
+}
+
+/* 4. Modern Input Fields (Floating Label) */
+.floating-field {
+  position: relative;
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+.floating-field input {
+  width: 100%;
+  padding: 16px 16px 16px 45px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  outline: none;
+  font-size: 15px;
+  transition: all 0.3s;
+}
+
+.floating-field label {
+  position: absolute;
+  left: 45px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  pointer-events: none;
+  transition: all 0.3s;
+}
+
+.floating-field input:focus ~ label,
+.floating-field input:not(:placeholder-shown) ~ label {
+  top: 0;
+  left: 15px;
+  font-size: 12px;
+  background: white;
+  padding: 0 5px;
+  color: var(--link-blue);
+  font-weight: 700;
+}
+
+.field-icon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+}
+
+/* 5. Captcha Design */
+.captcha-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 15px;
+  align-items: start;
+}
+
+.captcha-visual {
+  background: #f8fafc;
+  height: 56px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  border: 1px solid #e2e8f0;
+}
+
+.captcha-text {
+  font-family: "Courier New", monospace;
+  font-weight: 900;
+  font-size: 1.3rem;
+  letter-spacing: 5px;
+  color: #334155;
+  user-select: none;
+}
+
+.captcha-img-container img {
+  height: 48px;
+}
+
+.btn-submit-gradient {
+  width: 100%;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: white;
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.4);
+  transition: all 0.3s;
+}
+
+.btn-submit-gradient:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px -5px rgba(37, 99, 235, 0.5);
+}
+
+/* Segmented Control Switcher */
+
+/* Footer Link Styling */
+.auth-footer-note {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid #f1f5f9;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.btn-link-premium {
+  background: none;
+  border: none;
+  color: #2563eb;
+  font-weight: 700;
+  margin-left: 5px;
+  cursor: pointer;
+  padding: 0;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.btn-link-premium:hover {
+  color: #1d4ed8;
+  border-bottom-color: #1d4ed8;
+}
+
+/* Disabled Button Style */
+.btn-submit-gradient:disabled {
+  background: #cbd5e1 !important; /* Grey background */
+  cursor: not-allowed;
+  opacity: 0.7;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.btn-submit-gradient:disabled span,
+.btn-submit-gradient:disabled i {
+  color: #64748b;
+}
+
+/* --- INFO GRID (Replaces the Table) --- */
+.info-card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  background: #f8fafc;
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.info-item label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.info-item span {
+  font-size: 13px;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.uppercase-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #2d5e89;
+}
+
+/* --- MODAL BOUNCE LOGIC --- */
+@keyframes modal-bounce {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.03);
+  }
+  60% {
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* This targets Bootstrap's static backdrop trigger */
+.modal.modal-static .modal-content {
+  animation: modal-bounce 0.3s ease-in-out;
+}
+
+.modal-content {
+  border-radius: 20px;
+  border: none;
+  overflow: hidden;
+}
+
+.modal-header-gradient {
+  background: linear-gradient(135deg, #2d5e89 0%, #1b4163 100%);
+  border: none;
+}
+
+/* --- XP-NAMESPACE MODAL --- */
+
+.xp-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 20px;
+}
+
+.xp-overlay.show-modal {
+  display: flex;
+}
+
+.xp-modal {
+  background: #ffffff;
+  width: 100%;
+  max-width: 340px; /* Extremely compact */
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  animation: xp-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes xp-pop {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.xp-line {
+  height: 4px;
+  background: linear-gradient(90deg, #10b981, #3b82f6); /* Green to Blue */
+}
+
+.xp-content {
+  padding: 24px;
+  text-align: center;
+}
+
+.xp-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 4px;
+}
+
+.xp-subtitle {
+  font-size: 15px;
+  color: #018e02;
+  line-height: 1.4;
+}
+
+.xp-highlight {
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+/* --- ACTION BUTTONS --- */
+.xp-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.xp-btn-cancel {
+  background: #f1f5f9;
+  border: none;
+  color: #475569;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.xp-btn-cancel:hover {
+  background: #e2e8f0;
+}
+
+.xp-btn-confirm {
+  background: #1e293b; /* Sleek Dark Primary */
+  border: none;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.xp-btn-confirm:hover {
+  background: #0f172a;
+  transform: translateY(-1px);
+}
+
+/* --- SUCCESS SPECIFIC STYLES --- */
+
+.xp-line-success {
+  height: 4px;
+  background: linear-gradient(90deg, #10b981, #059669);
+}
+
+.xp-icon-box-success {
+  width: 50px;
+  height: 50px;
+  background: #ecfdf5;
+  color: #10b981;
+  border-radius: 50%; /* Circular for success */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin: 0 auto 16px;
+  box-shadow: 0 0 0 4px #f0fdf4;
+}
+
+.xp-id-badge {
+  background: #f8fafc;
+  border: 2px dashed #cbd5e1;
+  color: #1e293b;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 8px;
+  border-radius: 12px;
+  margin: 12px 0;
+  letter-spacing: 1px;
+}
+
+.xp-info-note {
+  font-size: 11px;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+/* --- SUCCESS ACTIONS --- */
+.xp-actions-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.xp-btn-download {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #475569;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.xp-btn-download:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.xp-btn-confirm-success {
+  background: #10b981;
+  border: none;
+  color: white;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  transition: 0.2s;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+.xp-btn-confirm-success:hover {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+/* Simple fade animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Container for the Date and Time pair */
+.xp-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Side by side */
+  gap: 12px;
+  margin-top: 16px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+/* Individual info cards */
+.xp-info-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Small label above the value */
+.xp-info-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #0c3f89;
+  font-weight: 700;
+}
+
+.xp-info-label i {
+  color: #2563eb; /* Blue Icon */
+  font-size: 14px;
+}
+
+/* The actual Date/Time text */
+.xp-info-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e293b; /* Deep Slate */
+}
+
+/* GSTIN Pill Styling */
+.xp-subtitle-main {
+  font-size: 15px;
+  color: #475569;
+  margin-bottom: 8px;
+}
+
+.xp-gst-pill {
+  background: #f1f5f9;
+  padding: 2px 8px;
+  border-radius: 12px;
+  color: #ff0000;
+  font-family:
+    "Monaco", "Consolas", monospace; /* Monospace for GSTIN looks better */
+  font-weight: 700;
+  border: 1px solid #e2e8f0;
+}
+
+/* Container: Tight horizontal alignment */
+.xp-compact-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 12px;
+  padding: 8px 12px;
+  margin: 0 auto;
+}
+
+/* Individual Badge Item */
+.xp-mini-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+/* Icon Styling: Smaller and subtle */
+.xp-mini-badge i {
+  font-size: 16px;
+  color: #3b82f6; /* Modern Blue */
+  opacity: 0.8;
+}
+
+/* Text Stack: Compact verticality */
+.xp-mini-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.xp-mini-text label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #0438cd;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+.xp-mini-text span {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  white-space: nowrap; /* Prevents wrapping in small modals */
+}
+
+/* Thin vertical separator */
+.xp-mini-divider {
+  width: 1px;
+  height: 20px;
+  background: #e2e8f0;
+  margin: 0 4px;
+}
+/* --- Modern Error Messaging --- */
+.error-feedback {
+  position: absolute;
+  top: 100%; /* Places it exactly below the input */
+  left: 0;
+  width: 100%;
+  color: #f43f5e;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-top: 4px; /* Small gap from input bottom */
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap; /* Prevents text from wrapping and causing shifts */
+  pointer-events: none;
+}
+
+.error-feedback i {
+  font-size: 1.1rem;
+}
+
+/* Input container state for errors */
+.field-error input {
+  border-bottom: 2px solid #f43f5e !important;
+  background: rgba(244, 63, 94, 0.03) !important;
+}
+
+.field-error label {
+  color: #f43f5e !important;
+}
+
+@keyframes slideInError {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

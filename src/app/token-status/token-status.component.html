@@ -1,0 +1,331 @@
+<div class="position-relative glass-header">
+  <div class="container-fluid py-2">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <a class="navbar-brand" href="#"
+          ><img
+            class="logo-header"
+            src="assets/images/logo.png"
+            alt="GST Appellate Tribunal"
+        /></a>
+      </div>
+      <div class="col-md-6 text-end">
+        <div class="right_logo">
+          <img src="assets/images/logo_sb.png" />
+          <img src="assets/images/logo_di.png" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<section class="auth-viewport">
+  <div class="glow-element"></div>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-5 col-md-8">
+        <div class="premium-auth-card">
+          <div class="auth-toggle-group mb-4">
+            <div class="toggle-wrapper">
+              <div class="premium-hint-card">
+                <div class="hint-content">
+                  <div class="hint-badge">Quick Start</div>
+                  <h6>New Reservation</h6>
+                  <p>
+                    Secure your slot instantly for token filing and skip the
+                    queue.
+                  </p>
+                </div>
+                <div class="hint-connector"></div>
+              </div>
+
+              <button class="toggle-btn" (click)="onTokenFilingBtnClick()">
+                <i class="mdi mdi-plus-circle-outline"></i>
+                <span>Reserve Token</span>
+              </button>
+            </div>
+            <button class="toggle-btn active">
+              <i class="mdi mdi-map-marker-path"></i> Track Status
+            </button>
+          </div>
+
+          <div class="card-head text-center">
+            <h3 class="track-title">Track Your Token</h3>
+            <div class="divider-container">
+              <hr class="accent-line" />
+            </div>
+            <p class="track-subtitle">
+              Enter your credentials below to check your application progress in
+              real-time.
+            </p>
+          </div>
+
+          <form
+            [formGroup]="tokenStatusForm"
+            (ngSubmit)="onTokenSubmit()"
+            class="mt-4"
+          >
+            <div class="floating-field mb-3">
+              <input
+                type="text"
+                id="tempNo"
+                formControlName="temporaryNo"
+                placeholder=" "
+              />
+              <label for="tempNo"
+                >Temporary Number <span class="required-star">*</span></label
+              >
+              <div class="field-icon">
+                <i class="mdi mdi-clipboard-text-search-outline"></i>
+              </div>
+            </div>
+
+            <div class="text-center my-3">
+              <span class="modern-divider-text">OR</span>
+              @if (
+                tokenStatusForm.errors?.["atLeastOneRequired"] &&
+                (tokenStatusForm.get("temporaryNo")?.touched ||
+                  tokenStatusForm.get("gstInNo")?.touched)
+              ) {
+                <div class="error-msg-fixed">
+                  Please enter Temporary Number or GSTIN
+                </div>
+              }
+            </div>
+
+            <div
+              class="floating-field"
+              [class.field-error]="tokenStatusForm.get('gstInNo')?.invalid"
+            >
+              <input
+                type="text"
+                id="gstInNo"
+                formControlName="gstInNo"
+                placeholder=" "
+                oninput="this.value = this.value.toUpperCase()"
+                maxlength="15"
+              />
+              <label for="gstInNo"
+                >Enter GSTIN Number <span class="required-star">*</span></label
+              >
+              <div class="field-icon"><i class="mdi mdi-identifier"></i></div>
+
+              @if (
+                tokenStatusForm.get("gstInNo")?.errors?.["pattern"] &&
+                tokenStatusForm.get("gstInNo")?.touched
+              ) {
+                <div class="error-feedback">
+                  <i class="mdi mdi-alert-circle-outline"></i> Invalid GSTIN
+                  format (e.g. 22AAAAA0000A1Z5).
+                </div>
+              }
+            </div>
+
+            <div class="captcha-grid mb-4">
+              <div class="captcha-visual">
+                <div class="captcha-img-container">
+                  <img [src]="captchaText" alt="Captcha" />
+                </div>
+
+                <div class="captcha-actions">
+                  <button
+                    type="button"
+                    class="refresh-btn"
+                    (click)="handleCaptchaRefresh()"
+                    [class.rotating]="isRefreshing"
+                    title="Reload Captcha"
+                  >
+                    <i class="mdi mdi-reload"></i>
+                  </button>
+                </div>
+              </div>
+              <div
+                class="floating-field"
+                [class.field-error]="
+                  tokenStatusForm.get('userCaptcha')?.invalid &&
+                  tokenStatusForm.get('userCaptcha')?.touched
+                "
+              >
+                <input
+                  type="text"
+                  formControlName="userCaptcha"
+                  maxlength="6"
+                  placeholder=" "
+                  required
+                />
+                <label>Captcha <span class="required-star">*</span></label>
+                @if (tokenStatusForm.get("userCaptcha")?.touched) {
+                  @if (
+                    tokenStatusForm.get("userCaptcha")?.errors?.["required"]
+                  ) {
+                    <div class="error-feedback">
+                      <i class="mdi mdi-alert-circle"></i> Required
+                    </div>
+                  } @else if (tokenStatusForm.get("userCaptcha")?.invalid) {
+                    <div class="error-feedback">
+                      <i class="mdi mdi-alert-circle-outline"></i> 6 characters
+                      required
+                    </div>
+                  }
+                }
+              </div>
+            </div>
+
+            <button
+              class="btn-submit-gradient"
+              [disabled]="tokenStatusForm.invalid"
+              type="submit"
+            >
+              <span>Search Status</span>
+            </button>
+          </form>
+
+          <div class="auth-action-footer">
+            <div class="footer-content">
+              <span class="helper-text"
+                >Cannot find your temporary number?</span
+              >
+              <button
+                type="button"
+                class="action-link-btn"
+                (click)="onTokenFilingBtnClick()"
+              >
+                Start New Request
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm-wide">
+    <div class="modal-content glass-compact-card">
+      <button type="button" class="btn-glass-close" (click)="onOKBtnSubmit()">
+        <i class="mdi mdi-close"></i>
+      </button>
+
+      <div class="modal-body p-4">
+        <div
+          class="d-flex align-items-center gap-3 mb-4"
+          [ngClass]="loginresponse?.resData?.length > 0 ? 'success' : 'empty'"
+        >
+          <div
+            class="status-icon-box"
+            [ngClass]="
+              loginresponse?.resData?.length > 0
+                ? 'state-success'
+                : 'state-alert'
+            "
+          >
+            <div class="icon-pulse"></div>
+
+            <i
+              class="mdi"
+              [ngClass]="
+                loginresponse?.resData?.length > 0
+                  ? 'mdi-check-decagram'
+                  : 'mdi-alert-decagram-outline'
+              "
+            >
+            </i>
+          </div>
+
+          <div class="modern-header-text">
+            <ng-container
+              *ngIf="loginresponse?.resData?.length > 0; else noDataText"
+            >
+              <h5 class="m-0 fw-800 text-dark">
+                {{ loginresponse.resData.length }} Records Found
+              </h5>
+              <div class="d-flex align-items-center gap-2 mt-1">
+                <span class="count-chip text-primary">
+                  {{ loginresponse.resData.length }} Slots
+                </span>
+              </div>
+            </ng-container>
+
+            <ng-template #noDataText>
+              <h5 class="m-0 fw-800 text-muted">No Slots Available</h5>
+              <div class="d-flex align-items-center gap-2 mt-1">
+                <span class="small text-muted">Please check back later</span>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+
+        <div class="results-scroll-container">
+          @for (item of loginresponse?.resData; track $index) {
+            <div class="compact-info-grid mb-3">
+              <div class="info-group">
+                <label>Start Time</label>
+                <p>{{ item.startTime || "N/A" }}</p>
+              </div>
+              <div class="info-group">
+                <label>End Time</label>
+                <p>{{ item.endTime || "N/A" }}</p>
+              </div>
+              <div class="info-group">
+                <label>Date</label>
+                <p>{{ item.date || "N/A" }}</p>
+              </div>
+              <div class="info-group">
+                <label>Token Number</label>
+                <p>{{ item.confirmToken || "N/A" }}</p>
+              </div>
+              <div class="info-group">
+                <label>Status</label>
+                <p [ngClass]="getStatusClass(item.status)">
+                  {{ item.status || "N/A" }}
+                </p>
+              </div>
+            </div>
+          } @empty {
+            <div class="text-center p-3">
+              <p class="text-muted">No specific slot data available.</p>
+            </div>
+          }
+        </div>
+
+        <button
+          type="button"
+          class="btn-modern-dark w-100 mt-2"
+          (click)="onOKBtnSubmit()"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@if (spinerLoader) {
+  <div class="system-quantum-overlay">
+    <div class="quantum-container">
+      <div class="quantum-emitter">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+      </div>
+
+      <div class="quantum-text-zone">
+        <h4 class="quantum-heading">{{ loaderHeading }}</h4>
+        <div class="status-pill">
+          <span class="live-dot"></span>
+          <p class="quantum-sub">{{ loaderSubtitle }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+<app-status-modal
+  [isVisible]="isStatusModalVisible"
+  [type]="statusConfig.type"
+  [title]="statusConfig.title"
+  [message]="statusConfig.message"
+  (onClose)="isStatusModalVisible = false"
+>
+</app-status-modal>

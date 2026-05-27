@@ -1,0 +1,510 @@
+.logo-header {
+  height: 75px;
+}
+
+header .right_logo img {
+  padding: 0 18px;
+  height: 50px;
+}
+
+.modal-dialog {
+  width: 500px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) !important;
+}
+
+.auth-viewport {
+  min-height: calc(100vh - 120px);
+
+  padding: 40px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.glow-element {
+  position: absolute;
+  top: -10%;
+  right: -5%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(
+    circle,
+    rgba(37, 99, 235, 0.08) 0%,
+    transparent 70%
+  );
+  z-index: 0;
+}
+
+.premium-auth-card {
+  background: #ffffff;
+  padding: 30px 40px 40px 40px;
+  border-radius: 28px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f1f5f9;
+  position: relative;
+  z-index: 1;
+}
+
+/* 4. Modern Input Fields (Floating Label) */
+.floating-field {
+  position: relative;
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+.floating-field input {
+  width: 100%;
+  padding: 16px 16px 16px 45px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  outline: none;
+  font-size: 15px;
+  transition: all 0.3s;
+}
+
+.floating-field label {
+  position: absolute;
+  left: 45px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  pointer-events: none;
+  transition: all 0.3s;
+}
+
+.floating-field input:focus ~ label,
+.floating-field input:not(:placeholder-shown) ~ label {
+  top: 0;
+  left: 15px;
+  font-size: 12px;
+  background: white;
+  padding: 0 5px;
+  color: var(--link-blue);
+  font-weight: 700;
+}
+
+.field-icon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+}
+
+/* 5. Captcha Design */
+.captcha-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 15px;
+  align-items: start;
+}
+
+.captcha-visual {
+  background: #f8fafc;
+  height: 56px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  border: 1px solid #e2e8f0;
+}
+.captcha-img-container img {
+  height: 48px;
+}
+
+.captcha-text {
+  font-family: "Courier New", monospace;
+  font-weight: 900;
+  font-size: 1.3rem;
+  letter-spacing: 5px;
+  color: #334155;
+  user-select: none;
+}
+
+.btn-submit-gradient {
+  width: 100%;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: white;
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.4);
+  transition: all 0.3s;
+}
+
+.btn-submit-gradient:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px -5px rgba(37, 99, 235, 0.5);
+}
+
+/* Footer Link Styling */
+.auth-footer-note {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid #f1f5f9;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.btn-link-premium {
+  background: none;
+  border: none;
+  color: #2563eb;
+  font-weight: 700;
+  margin-left: 5px;
+  cursor: pointer;
+  padding: 0;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.btn-link-premium:hover {
+  color: #1d4ed8;
+  border-bottom-color: #1d4ed8;
+}
+
+/* Styling for the "- OR -" text divider */
+.modern-divider-text {
+  position: relative;
+  display: inline-block;
+  padding: 0 15px;
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  background: #fff; /* Matches card bg to hide the line behind it */
+  z-index: 1;
+}
+
+.modern-divider-text::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -100px;
+  right: -100px;
+  height: 1px;
+  background: #e2e8f0;
+  z-index: -1;
+}
+
+/* Ensure the Search button looks slightly different but matches the vibe */
+.btn-submit-gradient {
+  /* Uses the same variable from previous design */
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+}
+
+/* Specific icon adjustment for this page */
+.field-icon i {
+  font-size: 18px;
+  color: #94a3b8;
+}
+
+/* Custom Width for Compactness */
+.modal-sm-wide {
+  max-width: 400px;
+}
+
+/* Glassmorphism Surface */
+.glass-compact-card {
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1) !important;
+  position: relative;
+}
+
+/* Floating Top Close Button */
+.btn-glass-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  border: none;
+  background: rgba(0, 0, 0, 0.05);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  cursor: pointer;
+  transition: 0.2s;
+  z-index: 10;
+}
+
+.btn-glass-close:hover {
+  background: #ef4444;
+  color: white;
+}
+
+/* Header Elements */
+.status-icon-box {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  font-size: 26px;
+  z-index: 1;
+}
+
+/* The Animated Pulse Ring */
+.icon-pulse {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  z-index: -1;
+  opacity: 0;
+}
+
+.state-success {
+  background: rgba(138, 43, 226, 0.1);
+  color: #0de229;
+  border: 1px solid rgba(138, 43, 226, 0.2);
+}
+
+.state-success .icon-pulse {
+  border: 2px solid #2ab41e;
+  animation: radar-ping 2s infinite;
+}
+
+.state-alert {
+  background: rgba(255, 71, 87, 0.1);
+  color: #ff4757;
+  border: 1px solid rgba(255, 71, 87, 0.2);
+}
+
+.state-alert .icon-pulse {
+  border: 2px solid #ff4757;
+  animation: radar-ping 2s infinite;
+}
+
+@keyframes radar-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Subtle Icon Float */
+.status-icon-box i {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.success .status-icon-box {
+  background: rgba(138, 43, 226, 0.15);
+  color: #03a018;
+  border: 1px solid rgba(93, 236, 26, 0.3);
+  box-shadow: 0 0 20px rgba(138, 43, 226, 0.2);
+}
+
+/* Empty State: Soft Amber/Rose Glass */
+.empty .status-icon-box {
+  background: rgba(255, 107, 107, 0.1);
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 107, 107, 0.2);
+}
+
+.modern-header-text h5 {
+  letter-spacing: -0.5px;
+  font-size: 1.15rem;
+}
+
+.count-chip {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: rgba(0, 0, 0, 0.05); /* Blends with your header color */
+}
+
+.fw-800 {
+  font-weight: 800;
+}
+
+.badge-status {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+/* Compact Data Grid */
+.compact-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 columns for a compact look */
+  gap: 12px;
+  padding: 15px;
+  background: #f8fafc; /* Subtle light background to separate cards */
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  transition: transform 0.2s;
+}
+
+.compact-info-grid:hover {
+  border-color: #3b82f6;
+  background: #ffffff;
+}
+
+.results-scroll-container {
+  max-height: 350px; /* Limits height so modal doesn't go off-screen */
+  overflow-y: auto;
+  padding-right: 8px;
+  margin-bottom: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(1, 47, 197, 0.3) transparent;
+}
+
+/* Custom Sleek Scrollbar */
+.results-scroll-container::-webkit-scrollbar {
+  width: 10px;
+}
+.results-scroll-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+.results-scroll-container::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+.info-group label {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  color: #64748b;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.info-group p {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* Modern Dark Button */
+.btn-modern-dark {
+  background: #0f172a;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 14px;
+  transition: all 0.3s;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+}
+
+.btn-modern-dark:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(37, 99, 235, 0.2);
+}
+/* Disabled Button Style */
+.btn-submit-gradient:disabled {
+  background: #cbd5e1 !important; /* Grey background */
+  cursor: not-allowed;
+  opacity: 0.7;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.btn-submit-gradient:disabled span,
+.btn-submit-gradient:disabled i {
+  color: #64748b;
+}
+
+/* --- Modern Error Messaging --- */
+.error-feedback {
+  position: absolute;
+  top: 100%; /* Places it exactly below the input */
+  left: 0;
+  width: 100%;
+  color: #f43f5e;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-top: 4px; /* Small gap from input bottom */
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap; /* Prevents text from wrapping and causing shifts */
+  pointer-events: none;
+}
+
+.error-feedback i {
+  font-size: 1.1rem;
+}
+
+/* Input container state for errors */
+.field-error input {
+  border-bottom: 2px solid #f43f5e !important;
+  background: rgba(244, 63, 94, 0.03) !important;
+}
+
+.field-error label {
+  color: #f43f5e !important;
+}
+
+@keyframes slideInError {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.error-msg-fixed {
+  color: #f43f5e !important;
+
+  font-weight: 500;
+  animation: fadeIn 0.2s ease-in;
+}
+
+/* Success: Green */
+.status-success {
+  color: green !important;
+}
+
+/* Danger: Red */
+.status-danger {
+  color: #dc2626 !important;
+}
+
+/* Default/Unknown: Slate */
+.status-default {
+  color: #475569 !important;
+}

@@ -1,0 +1,192 @@
+/* --- VIEWPORT --- */
+.toast-viewport {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  left: auto;
+  z-index: 150000;
+  pointer-events: none;
+}
+
+/* --- THE ACRYLIC PILL --- */
+.acrylic-toast {
+  pointer-events: auto;
+  position: relative;
+  min-width: 280px;
+  max-width: 380px;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(25px) saturate(200%) brightness(1.1);
+  -webkit-backdrop-filter: blur(25px) saturate(200%) brightness(1.1);
+  border-radius: 22px;
+  padding: 2px;
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.08),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+
+  animation: acrylic-slide-right 0.7s cubic-bezier(0.2, 1, 0.2, 1) forwards;
+}
+
+.acrylic-inner {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  gap: 14px;
+}
+
+/* --- ICON & RADIAL TIMER --- */
+.icon-ring-container {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.timer-svg {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-90deg);
+}
+
+.timer-path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 100, 100;
+  animation: radial-drain 4s linear forwards;
+}
+
+.icon-ring-container i {
+  font-size: 18px;
+  z-index: 2;
+}
+
+/* --- TEXT --- */
+.toast-content {
+  flex: 1;
+}
+
+.toast-msg {
+  font-size: 14px;
+  font-weight: 400;
+  color: #1a1c1e;
+  letter-spacing: -0.3px;
+}
+
+/* --- DISMISS --- */
+.toast-dismiss {
+  background: rgba(0, 0, 0, 0.04);
+  border: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  color: #5f6368;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all 0.2s;
+}
+
+.toast-dismiss:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: #000;
+}
+
+/* --- THEMES --- */
+.success {
+  color: #008a52;
+}
+.warning {
+  color: #c07600;
+}
+.error {
+  color: #d93025;
+}
+
+/* --- ANIMATIONS --- */
+@keyframes acrylic-slide-right {
+  0% {
+    transform: translateX(100px) scale(0.9); /* Start outside right */
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes radial-drain {
+  from {
+    stroke-dasharray: 100, 100;
+  }
+  to {
+    stroke-dasharray: 0, 100;
+  }
+}
+
+@keyframes acrylic-mobile-pop {
+  0% {
+    transform: scale(0.9) translateY(-20px);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+/* --- MOBILE --- */
+@media (max-width: 480px) {
+  .toast-viewport {
+    top: 20px;
+    left: 20px;
+    right: 20px;
+  }
+
+  .acrylic-toast {
+    max-width: 100%;
+    min-width: 0;
+    animation: acrylic-mobile-pop 0.5s cubic-bezier(0.2, 1, 0.2, 1) forwards;
+  }
+}
+/* --- EXIT ANIMATION TRIGGER --- */
+.acrylic-toast.closing {
+  /* !important ensures it overrides the entrance animation */
+  animation: acrylic-slide-out 0.5s cubic-bezier(0.4, 0, 1, 1) forwards !important;
+  pointer-events: none;
+}
+
+/* Desktop: Slide OUT to the Right (Ulta) */
+@keyframes acrylic-slide-out {
+  0% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(120px) scale(0.9); /* Ulta: back to the right */
+    opacity: 0;
+  }
+}
+
+/* Mobile: Fade UP and Shrink (Ulta) */
+@keyframes acrylic-mobile-out {
+  0% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.8) translateY(-20px);
+    opacity: 0;
+  }
+}
+
+/* Ensure mobile adaptation uses the mobile-out animation */
+@media (max-width: 480px) {
+  .acrylic-toast.closing {
+    animation: acrylic-mobile-out 0.4s ease-in forwards !important;
+  }
+}
