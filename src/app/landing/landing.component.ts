@@ -11,6 +11,7 @@ import { Modal } from 'bootstrap';
 import { ToastService } from '../services/toast.service';
 import { CommonModule } from '@angular/common';
 import { StatusModalComponent } from '../shared/status-modal/status-modal.component';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-landing',
@@ -54,7 +55,7 @@ export class LandingComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.generateLoginForm();
-    this.getTokenResponse();
+
     this.generateCaptcha();
     this.generateSlotForm();
   }
@@ -159,27 +160,63 @@ export class LandingComponent implements OnInit, AfterViewInit {
         next: (response) => {
           this.spinerLoader = false;
 
-          if (response.status === 200) {
-            if (response.body.status === 200) {
+          if (response.status === 200 && response.body) {
+            try {
+              const encryptedBodyStr = response.body;
+
+              const key = CryptoJS.enc.Utf8.parse(
+                '572eebb393b2ae7201bc3a42b5f55cb4',
+              );
+
+              const decryptedBytes = CryptoJS.AES.decrypt(
+                encryptedBodyStr,
+                key,
+                {
+                  mode: CryptoJS.mode.ECB,
+                  padding: CryptoJS.pad.Pkcs7,
+                },
+              );
+
+              const decryptedText = decryptedBytes.toString(CryptoJS.enc.Utf8);
+
+              if (!decryptedText) {
+                throw new Error('Decryption failed. Empty output string.');
+              }
+
+              const extractedBody = JSON.parse(decryptedText);
+
+              if (extractedBody.status === 200) {
+                this.toast.show(
+                  extractedBody.message + '      ' + extractedBody.resData.otp,
+                  'success',
+                );
+                this.loginresponse = extractedBody;
+                this.showOTPMsg = true;
+                this.generateSlotForm();
+              } else {
+                this.toast.show(extractedBody.message, 'error');
+                this.showStatus(
+                  'not-found',
+                  'Data Not Found',
+                  extractedBody.message,
+                );
+                this.handleFailure();
+              }
+            } catch (cryptoError) {
+              console.error(
+                'Failed to decrypt or parse the response body:',
+                cryptoError,
+              );
               this.toast.show(
-                response.body.message + '      ' + response.body.resData.otp,
-                'success',
+                'Data decryption error. Please check secret key configurations.',
+                'error',
               );
-              this.loginresponse = response.body;
-              this.showOTPMsg = true;
-              this.generateSlotForm();
-            } else {
-              this.toast.show(response.body.message, 'error');
-              this.showStatus(
-                'not-found',
-                'Data Not Found',
-                response.body.message,
-              );
-              this.handleFailure();
             }
           } else {
-            this.toast.show(response.body.message, 'error');
-            // this.handleFailure();
+            this.toast.show(
+              response.body ? response.body.message : 'Unknown Server Error',
+              'error',
+            );
           }
         },
         error: (err) => {
@@ -191,10 +228,11 @@ export class LandingComponent implements OnInit, AfterViewInit {
           } else if (err.status === 404) {
             this.toast.show(err.error, 'error');
           } else {
-            this.toast.show(err.error.message, 'error');
+            this.toast.show(
+              err.error?.message || 'Something went wrong',
+              'error',
+            );
           }
-
-          // this.handleFailure();
         },
       });
     }
@@ -229,7 +267,6 @@ export class LandingComponent implements OnInit, AfterViewInit {
     );
 
     const gstNo = this.loginresponse.resData.gstNo;
-
     const startTime = this.startTime;
     const otp = this.slotForm.value.otp;
     const token = this.loginresponse.resData.token;
@@ -240,37 +277,78 @@ export class LandingComponent implements OnInit, AfterViewInit {
     this.authservice.confirmSlot(gstNo, date, startTime, otp, token).subscribe({
       next: (response) => {
         this.spinerLoader = false;
-        if (response.status === 201) {
-          if (response.body.status === 201) {
-            this.toast.show(response.body.message, 'success');
-            this.refId = response.body.resData;
-            // 2. Show the success overlay
-            const successModal = document.getElementById('successModal');
-            if (successModal) successModal.classList.add('show-modal');
-          } else {
-            this.toast.show(response.body.message, 'error');
-            this.showStatus(
-              'not-found',
-              'Data Not Found',
-              response.body.message || 'No records match the provided details.',
+
+        if (response.status === 201 && response.body) {
+          try {
+            const encryptedBodyStr = response.body;
+
+            const key = CryptoJS.enc.Utf8.parse(
+              '572eebb393b2ae7201bc3a42b5f55cb4',
             );
-            this.handleResFailure();
+
+            const decryptedBytes = CryptoJS.AES.decrypt(encryptedBodyStr, key, {
+              mode: CryptoJS.mode.ECB,
+              padding: CryptoJS.pad.Pkcs7,
+            });
+
+            const decryptedText = decryptedBytes.toString(CryptoJS.enc.Utf8);
+
+            if (!decryptedText) {
+              throw new Error('Decryption failed or returned empty payload.');
+            }
+
+            const decryptedBody = JSON.parse(decryptedText);
+
+            if (decryptedBody.status === 201) {
+              this.toast.show(decryptedBody.message, 'success');
+              this.refId = decryptedBody.resData;
+
+              const successModal = document.getElementById('successModal');
+              if (successModal) successModal.classList.add('show-modal');
+            } else {
+              this.toast.show(decryptedBody.message, 'error');
+              this.showStatus(
+                'not-found',
+                'Data Not Found',
+                decryptedBody.message ||
+                  'No records match the provided details.',
+              );
+              this.handleResFailure();
+            }
+          } catch (cryptoError) {
+            console.error(
+              'Failed to decrypt or parse confirmSlot payload:',
+              cryptoError,
+            );
+            this.toast.show(
+              'Data decryption error. Check secret key configuration.',
+              'error',
+            );
           }
         } else {
-          this.toast.show(response.body.message, 'error');
-          // this.handleResFailure();
+          this.toast.show(
+            response.body ? response.body.message : 'Slot confirmation failed',
+            'error',
+          );
         }
       },
       error: (err) => {
         this.spinerLoader = false;
         if (err.status === 400) {
-          this.showStatus('api-fail', 'Invalid Input', err.error.message);
+          this.showStatus(
+            'api-fail',
+            'Invalid Input',
+            err.error?.message || 'Bad Request',
+          );
         } else if (err.status === 500) {
-          this.showStatus('server-error', 'Error', err.error.message);
+          this.showStatus(
+            'server-error',
+            'Error',
+            err.error?.message || 'Internal Server Error',
+          );
         } else {
           this.toast.show('Error Please Reload and Try Again', 'error');
         }
-        // this.handleResFailure();
       },
     });
   }
@@ -308,10 +386,6 @@ export class LandingComponent implements OnInit, AfterViewInit {
     });
   }
 
-  getTokenResponse() {
-    // Internal method to fetch initial access tokens...
-  }
-
   onCheckTokenStatusBtnClick() {
     this.router.navigate(['tokenStatus']);
   }
@@ -321,31 +395,68 @@ export class LandingComponent implements OnInit, AfterViewInit {
     this.slotForm.get('selectedSlot')?.reset();
 
     this.startLoader('Checking Slots', 'Fetching availability...');
+
     // Format the date if necessary to match DD-MM-YYYY
     this.authservice.getAvailableSlots(date).subscribe({
       next: (response) => {
         this.spinerLoader = false;
-        // Check if the body status is 200
-        if (response.status === 200) {
-          const data = response.body;
-          if (data && data.status === 200) {
-            this.toast.show(data?.message, 'success');
-            this.availableSlots = data.resData || [];
-          } else {
-            this.toast.show(data?.message || 'Slots not found', 'warning');
+
+        if (response.status === 200 && response.body) {
+          try {
+            const encryptedBodyStr = response.body;
+
+            const key = CryptoJS.enc.Utf8.parse(
+              '572eebb393b2ae7201bc3a42b5f55cb4',
+            );
+
+            const decryptedBytes = CryptoJS.AES.decrypt(encryptedBodyStr, key, {
+              mode: CryptoJS.mode.ECB,
+              padding: CryptoJS.pad.Pkcs7,
+            });
+
+            const decryptedText = decryptedBytes.toString(CryptoJS.enc.Utf8);
+
+            if (!decryptedText) {
+              throw new Error('Decryption failed or returned empty payload.');
+            }
+
+            const data = JSON.parse(decryptedText);
+
+            if (data && data.status === 200) {
+              this.toast.show(data?.message, 'success');
+              this.availableSlots = data.resData || [];
+            } else {
+              this.toast.show(data?.message || 'Slots not found', 'warning');
+            }
+          } catch (cryptoError) {
+            console.error(
+              'Failed to decrypt or parse slots payload:',
+              cryptoError,
+            );
+            this.toast.show(
+              'Data decryption error. Check secret key configuration.',
+              'error',
+            );
           }
         } else {
-          this.toast.show(
-            response.body.message || 'Slots not found',
-            'warning',
-          );
+          this.toast.show('Slots not found', 'warning');
         }
       },
       error: (err) => {
         this.spinerLoader = false;
         this.availableSlots = [];
         this.slotForm.get('date')?.reset(null, { emitEvent: false });
-        this.toast.show('Server Error: Unable to fetch slots', 'error');
+        if (err.status === 400) {
+          this.toast.show(err.error?.message || 'Bad Request', 'error');
+        } else if (err.status === 500) {
+          this.showStatus(
+            'server-error',
+            'Error',
+            err.error?.message || 'Internal Server Error',
+          );
+        } else {
+          this.toast.show('Error Please Reload and Try Again', 'error');
+        }
       },
     });
   }

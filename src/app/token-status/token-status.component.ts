@@ -16,6 +16,7 @@ import { AuthService } from '../services/auth.service';
 import { ToastService } from '../services/toast.service';
 import { Observable } from 'rxjs';
 import { StatusModalComponent } from '../shared/status-modal/status-modal.component';
+import * as CryptoJS from 'crypto-js';
 
 export const atLeastOneValidator = (): ValidatorFn => {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -185,39 +186,74 @@ export class TokenStatusComponent {
     searchObservable.subscribe({
       next: (response) => {
         this.spinerLoader = false;
+        if (response.status === 200 && response.body) {
+          try {
+            const encryptedBodyStr = response.body;
 
-        if (response.status === 200) {
-          if (response.body.status === 200) {
-            this.toast.show(response.body.message, 'success');
-            this.loginresponse = response.body;
-            if (this.loginresponse.resData) {
-              this.loginresponse.resData = Array.isArray(
-                this.loginresponse.resData,
-              )
-                ? this.loginresponse.resData
-                : [this.loginresponse.resData];
-            } else {
-              this.loginresponse.resData = []; // Default to empty array if null/undefined
-            }
-            this.modalInstance.show();
-          } else {
-            this.toast.show(response.body.message, 'error');
-            this.showStatus(
-              'not-found',
-              'Data Not Found',
-              response.body.message || 'No records match the provided details.',
+            const key = CryptoJS.enc.Utf8.parse(
+              '572eebb393b2ae7201bc3a42b5f55cb4',
             );
-            this.handleFailure();
+
+            const decryptedBytes = CryptoJS.AES.decrypt(encryptedBodyStr, key, {
+              mode: CryptoJS.mode.ECB,
+              padding: CryptoJS.pad.Pkcs7,
+            });
+
+            const decryptedText = decryptedBytes.toString(CryptoJS.enc.Utf8);
+
+            if (!decryptedText) {
+              throw new Error('Decryption failed or returned empty payload.');
+            }
+
+            const decryptedBody = JSON.parse(decryptedText);
+
+            if (decryptedBody.status === 200) {
+              this.toast.show(decryptedBody.message, 'success');
+              this.loginresponse = decryptedBody;
+
+              if (this.loginresponse.resData) {
+                this.loginresponse.resData = Array.isArray(
+                  this.loginresponse.resData,
+                )
+                  ? this.loginresponse.resData
+                  : [this.loginresponse.resData];
+              } else {
+                this.loginresponse.resData = []; // Default to empty array if null/undefined
+              }
+
+              this.modalInstance.show();
+            } else {
+              this.toast.show(decryptedBody.message, 'error');
+              this.showStatus(
+                'not-found',
+                'Data Not Found',
+                decryptedBody.message ||
+                  'No records match the provided details.',
+              );
+              this.handleFailure();
+            }
+          } catch (cryptoError) {
+            console.error(
+              'Failed to decrypt or parse search response payload:',
+              cryptoError,
+            );
+            this.toast.show(
+              'Data decryption error. Check secret key configuration.',
+              'error',
+            );
           }
         } else {
-          this.toast.show(response.body.message, 'error');
+          this.toast.show(
+            response.body ? response.body.message : 'Search failed',
+            'error',
+          );
         }
       },
       error: (err) => {
         this.spinerLoader = false;
 
         if (err.status === 400) {
-          this.toast.show(err.error.message, 'error');
+          this.toast.show(err.error?.message || 'Bad Request', 'error');
         } else if (err.status === 500) {
           this.showStatus(
             'server-error',
@@ -225,7 +261,10 @@ export class TokenStatusComponent {
             'The GSTAT portal is experiencing issues. Please try again later.',
           );
         } else {
-          this.toast.show(err.error.message, 'error');
+          this.toast.show(
+            err.error?.message || 'Something went wrong',
+            'error',
+          );
         }
         this.handleFailure();
       },

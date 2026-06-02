@@ -1,0 +1,10 @@
+{
+  "/qms-api": {
+    "target": "https://uat-efiling.gstat.gov.in",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/qms-api": "/qms/api"
+    }
+  }
+}
