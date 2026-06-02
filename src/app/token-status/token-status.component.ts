@@ -271,6 +271,22 @@ export class TokenStatusComponent {
     });
   }
 
+  // Add this line inside your component class
+  selectedFilter: 'Confirmed' | 'Expired' = 'Confirmed';
+  hasFilteredItems(filterStatus: string): boolean {
+    if (!this.loginresponse?.resData) return false;
+    return this.loginresponse.resData.some(
+      (item: { status?: string; [key: string]: any }) =>
+        item.status?.toLowerCase() === filterStatus.toLowerCase(),
+    );
+  }
+  getFilterCount(filterStatus: string): number {
+    if (!this.loginresponse?.resData) return 0;
+    return this.loginresponse.resData.filter(
+      (item: any) => item.status?.toLowerCase() === filterStatus.toLowerCase(),
+    ).length;
+  }
+
   getStatusClass(status: string): string {
     if (!status) return 'status-default';
 

@@ -1482,7 +1482,7 @@ td.table-cell {
 
 #page-transition-overlay.is-active {
   background: rgba(255, 255, 255, 0.9); /* Fade to a clean white glass */
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(2px);
   pointer-events: all;
 }
 

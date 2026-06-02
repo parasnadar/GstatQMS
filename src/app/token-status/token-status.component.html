@@ -239,11 +239,6 @@
               <h5 class="m-0 fw-800 text-dark">
                 {{ loginresponse.resData.length }} Records Found
               </h5>
-              <div class="d-flex align-items-center gap-2 mt-1">
-                <span class="count-chip text-primary">
-                  {{ loginresponse.resData.length }} Slots
-                </span>
-              </div>
             </ng-container>
 
             <ng-template #noDataText>
@@ -255,33 +250,86 @@
           </div>
         </div>
 
+        <div
+          *ngIf="loginresponse?.resData?.length > 0"
+          class="filter-segmented-control"
+        >
+          <button
+            type="button"
+            class="filter-control-btn"
+            [ngClass]="{
+              'is-active-confirmed': selectedFilter === 'Confirmed',
+            }"
+            (click)="selectedFilter = 'Confirmed'"
+          >
+            <i class="mdi mdi-check-circle-outline me-1"></i>
+            <span>Active</span>
+            <span class="filter-count-badge ms-2">
+              {{ getFilterCount("Confirmed") }}
+            </span>
+          </button>
+
+          <button
+            type="button"
+            class="filter-control-btn"
+            [ngClass]="{ 'is-active-expired': selectedFilter === 'Expired' }"
+            (click)="selectedFilter = 'Expired'"
+          >
+            <i class="mdi mdi-clock-alert-outline me-1"></i>
+            <span>Expired</span>
+            <span class="filter-count-badge ms-2">
+              {{ getFilterCount("Expired") }}
+            </span>
+          </button>
+        </div>
+
         <div class="results-scroll-container">
-          @for (item of loginresponse?.resData; track $index) {
-            <div class="compact-info-grid mb-3">
-              <div class="info-group">
-                <label>Start Time</label>
-                <p>{{ item.startTime || "N/A" }}</p>
-              </div>
-              <div class="info-group">
-                <label>End Time</label>
-                <p>{{ item.endTime || "N/A" }}</p>
-              </div>
-              <div class="info-group">
-                <label>Date</label>
-                <p>{{ item.date || "N/A" }}</p>
-              </div>
-              <div class="info-group">
-                <label>Token Number</label>
-                <p>{{ item.confirmToken || "N/A" }}</p>
-              </div>
-              <div class="info-group">
-                <label>Status</label>
-                <p [ngClass]="getStatusClass(item.status)">
-                  {{ item.status || "N/A" }}
+          @if (loginresponse?.resData?.length > 0) {
+            @if (hasFilteredItems(selectedFilter)) {
+              @for (item of loginresponse?.resData; track $index) {
+                @if (
+                  item.status?.toLowerCase() === selectedFilter.toLowerCase()
+                ) {
+                  <div class="compact-info-grid mb-3">
+                    <div class="info-group">
+                      <label>Start Time</label>
+                      <p>{{ item.startTime || "N/A" }}</p>
+                    </div>
+                    <div class="info-group">
+                      <label>End Time</label>
+                      <p>{{ item.endTime || "N/A" }}</p>
+                    </div>
+                    <div class="info-group">
+                      <label>Date</label>
+                      <p>{{ item.date || "N/A" }}</p>
+                    </div>
+                    <div class="info-group">
+                      <label>Token Number</label>
+                      <p>{{ item.confirmToken || "N/A" }}</p>
+                    </div>
+                    <div class="info-group">
+                      <label>Status</label>
+                      <p [ngClass]="getStatusClass(item.status)">
+                        {{ item.status || "N/A" }}
+                      </p>
+                    </div>
+                  </div>
+                }
+              }
+            } @else {
+              <div class="text-center p-4">
+                <i
+                  class="mdi mdi-clipboard-text-search-outline text-muted d-block mb-2"
+                  style="font-size: 2rem; opacity: 0.5"
+                ></i>
+                <p class="text-muted m-0 fw-semibold">
+                  No
+                  {{ selectedFilter === "Confirmed" ? "active" : "expired" }}
+                  tokens found.
                 </p>
               </div>
-            </div>
-          } @empty {
+            }
+          } @else {
             <div class="text-center p-3">
               <p class="text-muted">No specific slot data available.</p>
             </div>
